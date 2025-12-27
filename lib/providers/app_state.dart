@@ -7,7 +7,6 @@ class AppState extends ChangeNotifier {
   final PaymentService _paymentService = PaymentService();
 
   String? fanUid;
-  String? meterNumber;
   double? amount;
   double? kwh;
   String? generatedToken;
@@ -18,8 +17,7 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setPaymentDetails(String meter, double amt) {
-    meterNumber = meter;
+  void setPaymentDetails(double amt) {
     amount = amt;
     // Sample calculation: 1 ETB = 0.5 kWh
     kwh = amt * 0.5;

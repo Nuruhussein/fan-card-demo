@@ -30,131 +30,148 @@ class WriteTokenScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isWriting = Provider.of<AppState>(context).isWriting;
     final token = Provider.of<AppState>(context).generatedToken;
+    final kwh = Provider.of<AppState>(context).kwh;
 
     return Scaffold(
       body: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [Colors.orange.shade800, Colors.black],
+            colors: [Color(0xFF1E1B4B), Color(0xFF0F172A)],
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.check_circle, size: 80, color: Colors.greenAccent),
-            const SizedBox(height: 20),
-            const Text(
-              'Payment Successful!',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+        child: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
+              const Icon(
+                Icons.check_circle,
+                size: 80,
+                color: Color(0xFF10B981), // Emerald 500
               ),
-            ),
-            const SizedBox(height: 40),
-            const Text(
-              'Your Token',
-              style: TextStyle(color: Colors.white70, fontSize: 16),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white24),
-              ),
-              child: Text(
-                token ?? 'Token Not Found',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.yellowAccent,
-                  fontSize: 28,
-                  letterSpacing: 4,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'monospace',
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              '${Provider.of<AppState>(context).kwh?.toStringAsFixed(2) ?? "0.00"} kWh',
-              style: const TextStyle(
-                color: Colors.greenAccent,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Energy Equivalent',
-              style: TextStyle(color: Colors.white54, fontSize: 14),
-            ),
-            const SizedBox(height: 40),
-            const Divider(color: Colors.white24, indent: 40, endIndent: 40),
-            const SizedBox(height: 40),
-            const Text(
-              'Instructions',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'Please tap your NFC card to the back of your phone to write the token.',
-                textAlign: TextAlign.center,
+              const SizedBox(height: 24),
+              const Text(
+                'Payment Received',
                 style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 16,
-                  height: 1.5,
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            const SizedBox(height: 60),
-            if (isWriting)
-              Column(
-                children: [
-                  const SpinKitRipple(color: Colors.white, size: 80),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Writing to Card...',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
-                      fontSize: 16,
-                    ),
+              const SizedBox(height: 8),
+              const Text(
+                'Token ready for card writing',
+                style: TextStyle(color: Colors.white54, fontSize: 16),
+              ),
+              const Spacer(),
+              // Token Card
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(32),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(32),
+                    border: Border.all(color: Colors.white10),
                   ),
-                ],
-              )
-            else
-              ElevatedButton.icon(
-                onPressed: () => _handleWrite(context),
-                icon: const Icon(Icons.nfc),
-                label: const Text(
-                  'Write Token to Card',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.orange.shade900,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 18,
+                  child: Column(
+                    children: [
+                      const Text(
+                        'RECHARGE TOKEN',
+                        style: TextStyle(
+                          color: Color(0xFF818CF8),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        token ?? '---- ---- ---- ----',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          letterSpacing: 4,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      const Divider(color: Colors.white10),
+                      const SizedBox(height: 32),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.bolt, color: Colors.amber, size: 32),
+                          const SizedBox(width: 12),
+                          Text(
+                            '${kwh?.toStringAsFixed(2) ?? "0.00"} kWh',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: 8,
                 ),
               ),
-          ],
+              const Spacer(),
+              // Action Section
+              Padding(
+                padding: const EdgeInsets.all(32),
+                child:
+                    isWriting
+                        ? Column(
+                          children: [
+                            const SpinKitRipple(
+                              color: Color(0xFF818CF8),
+                              size: 100,
+                            ),
+                            const SizedBox(height: 24),
+                            const Text(
+                              'UPDATING CARD...',
+                              style: TextStyle(
+                                color: Color(0xFF818CF8),
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.5,
+                              ),
+                            ),
+                          ],
+                        )
+                        : SizedBox(
+                          width: double.infinity,
+                          height: 65,
+                          child: ElevatedButton.icon(
+                            onPressed: () => _handleWrite(context),
+                            icon: const Icon(Icons.nfc, size: 28),
+                            label: const Text('WRITE TO CARD'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: const Color(0xFF1E1B4B),
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 8,
+                              textStyle: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                          ),
+                        ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
