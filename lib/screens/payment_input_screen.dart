@@ -47,7 +47,7 @@ class _PaymentInputScreenState extends State<PaymentInputScreen> {
           txRef: txRef,
           phone: "0900123456", // Mandatory in this version
           namedRouteFallBack: "/write-token", // Mandatory in this version
-          title: 'Electricity Token',
+          title: 'Energy Recharge',
           desc: 'Electricity Payment',
           nativeCheckout: true,
           onPaymentFinished: (message, reference, paidAmount) {
